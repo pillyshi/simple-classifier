@@ -1,18 +1,6 @@
 import numpy as np
 from sklearn.base import BaseEstimator
-
-
-def _check_y(y):
-    _classes = np.unique(y)
-    if len(_classes) != 2:
-        assert()
-
-
-def _convert_y(y):
-    _classes = np.unique(y)
-    if np.any(np.isin(_classes, [-1, 1], invert=True)):
-        return 2 * (y == _classes.max()) - 1
-    return y
+from utils import _check_y, _convert_y
 
 
 class SimpleClassifier(BaseEstimator):
@@ -58,10 +46,10 @@ class EnsembleRandomSimpleClassifier(BaseEstimator):
             Z = 2 * (X >= self.thresholds[i]) - 1
             self.W[i] = Z.T.dot(y) / n
         return self
-        
+
     def predict(self, X):
         return np.sign(self.decision_function(X))
-    
+
     def decision_function(self, X):
         y_pred = np.zeros(X.shape[0])
         for i in range(self.thresholds.shape[0]):
