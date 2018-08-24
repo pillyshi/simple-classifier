@@ -2,3 +2,4 @@
 .venv/
 .vscode/
 output/
+simple_classifier.egg-info/

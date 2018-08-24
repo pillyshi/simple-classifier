@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.base import BaseEstimator
-from utils import _check_y, _convert_y
+from .utils import _check_y, _convert_y
 
 
 class SimpleClassifier(BaseEstimator):
