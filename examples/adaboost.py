@@ -4,12 +4,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.datasets import load_iris, make_moons, make_circles
 from sklearn.ensemble import AdaBoostClassifier
-from sklearn.multiclass import OneVsRestClassifier
 from sklearn.kernel_approximation import RBFSampler
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import cross_val_score
 
-from simple_classifier import SimpleRandomBinaryClassifier
+from simple_classifier import SimpleClassifier, SimpleRandomClassifier
 
 
 def plot(X, y, clf):
@@ -32,7 +31,7 @@ def plot(X, y, clf):
 
 def load(dataset, random_state, n_samples):
     datasets = {
-        # 'iris': lambda: load_iris(return_X_y=True),
+        'iris': lambda: load_iris(return_X_y=True),
         'moons': lambda: make_moons(noise=0.05, random_state=random_state, n_samples=n_samples),
         'circles': lambda: make_circles(noise=0.05, factor=0.5, random_state=random_state, n_samples=n_samples)
     }
@@ -44,14 +43,21 @@ def load(dataset, random_state, n_samples):
 def main(args):
     X, y = load(args.dataset, args.random_state, args.n_samples)
 
-    classifier = AdaBoostClassifier(SimpleRandomBinaryClassifier(
-        convert_y=True,
-    ), algorithm='SAMME', n_estimators=args.n_estimators, random_state=args.random_state)
-    pipe = Pipeline([
-        ('transformer', RBFSampler()),
-        ('classifier', classifier)
-    ])
-    print('accuracy:', cross_val_score(pipe, X, y, scoring='accuracy').mean())
+    names = ['SimpleClassifier', 'AdaBoost']
+    classifiers = [
+        SimpleClassifier(),
+        AdaBoostClassifier(SimpleRandomClassifier(
+            random_state=args.random_state
+        ), 
+        algorithm='SAMME', n_estimators=args.n_estimators, random_state=args.random_state)
+    ]
+    for name, classifier in zip(names, classifiers):
+        pipe = Pipeline([
+            ('transformer', RBFSampler()),
+            ('classifier', classifier)
+        ])
+        print('accuracy ({}):'.format(name),
+            cross_val_score(pipe, X, y, scoring='accuracy').mean())
 
     if args.plot:
         if args.dataset == 'iris':

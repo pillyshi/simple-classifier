@@ -1,1 +1,1 @@
-from .simple_classifier import SimpleBinaryClassifier, SimpleRandomBinaryClassifier
+from .simple_classifier import SimpleClassifier, SimpleRandomClassifier

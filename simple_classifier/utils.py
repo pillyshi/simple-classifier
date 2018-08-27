@@ -1,4 +1,5 @@
 import numpy as np
+from sklearn.preprocessing import LabelBinarizer
 
 
 def _check_y(y):
@@ -8,7 +9,8 @@ def _check_y(y):
 
 
 def _convert_y(y):
-    _classes = np.unique(y)
-    if np.any(np.isin(_classes, [-1, 1], invert=True)):
-        return 2 * (y == _classes.max()) - 1
-    return y
+    classes = np.unique(y, axis=0)
+    if len(classes) > 2:
+        Y = LabelBinarizer().fit_transform(y)
+        return 2 * Y - 1
+    return 2 * np.int32(y > classes.min()) - 1
