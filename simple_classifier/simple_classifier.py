@@ -10,7 +10,7 @@ class Base(BaseEstimator, ClassifierMixin):
         if len(self.classes_) > 2:
             indices = dec.argmax(axis=1)
         else:
-            indices = np.int32(self.decision_function(X) >= 0)
+            indices = np.int32(dec >= 0)
         return self.classes_[indices]
 
     def decision_function(self, X):
