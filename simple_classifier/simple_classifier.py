@@ -46,13 +46,14 @@ class SimpleRandomBinaryClassifier(BaseEstimator, ClassifierMixin):
         rnd = np.random.RandomState(self.random_state)
         mean = X.mean(axis=0)
         self.threshold_ = rnd.multivariate_normal(mean, np.identity(d) * self.sigma)
-        Z = 2 * (X >= self.threshold) - 1
+        Z = 2 * (X >= self.threshold_) - 1
         Z = Z * np.c_[sample_weight]
         self.w_ = Z.T.dot(y) / n
         return self
 
     def predict(self, X):
-        return np.int32(self.decision_function(X) >= 0)
+        indices = np.int32(self.decision_function(X) >= 0)
+        return self.classes_[indices]
 
     def decision_function(self, X):
         Z = 2 * (X >= self.threshold_) - 1
