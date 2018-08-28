@@ -7,9 +7,9 @@ pipenv install
 ## Run examples
 
 ```
-pipenv run python -m examples.example --dataset iris
-pipenv run python -m examples.example --dataset moons --plot
-pipenv run python -m examples.example --dataset circles --plot
+pipenv run python -m examples.adaboost --dataset iris --random-state 0
+pipenv run python -m examples.adaboost --dataset moons --random-state 0 --plot
+pipenv run python -m examples.adaboost --dataset circles --random-state 0 --plot
 ```
 
 ## Benchmark
