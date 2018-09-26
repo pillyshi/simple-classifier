@@ -8,7 +8,7 @@ from sklearn.kernel_approximation import RBFSampler
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import cross_val_score
 
-from simple_classifier import SimpleClassifier, SimpleRandomClassifier
+from simple_classifier import SimpleClassifier
 
 
 def plot(X, y, clf):
@@ -43,17 +43,20 @@ def load(dataset, random_state, n_samples):
 def main(args):
     X, y = load(args.dataset, args.random_state, args.n_samples)
 
-    names = ['SimpleClassifier', 'AdaBoost']
+    names = ['SimpleClassifier (SRP)', 'SimpleClassifier (mean)', 'AdaBoost (SRP)', 'AdaBoost (mean-random)']
     classifiers = [
-        SimpleClassifier(),
-        AdaBoostClassifier(SimpleRandomClassifier(
-            random_state=args.random_state
-        ), 
-        algorithm='SAMME', n_estimators=args.n_estimators, random_state=args.random_state)
+        SimpleClassifier(transformer='SRP', random_state=args.random_state),
+        SimpleClassifier(transformer='mean'),
+        AdaBoostClassifier(
+            SimpleClassifier(transformer='SRP', random_state=args.random_state),
+            algorithm='SAMME', n_estimators=args.n_estimators, random_state=args.random_state),
+        AdaBoostClassifier(
+            SimpleClassifier(transformer='mean-random', random_state=args.random_state),
+            algorithm='SAMME', n_estimators=args.n_estimators, random_state=args.random_state),
     ]
     for name, classifier in zip(names, classifiers):
         pipe = Pipeline([
-            ('transformer', RBFSampler()),
+            ('transformer', RBFSampler(random_state=args.random_state, n_components=100)),
             ('classifier', classifier)
         ])
         print('accuracy ({}):'.format(name),
@@ -70,7 +73,7 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', type=str, default='moons')
     parser.add_argument('--n-samples', type=int, default=500)
     parser.add_argument('--random-state', type=int, default=None)
-    parser.add_argument('--n-estimators', type=int, default=1000)
+    parser.add_argument('--n-estimators', type=int, default=100)
     parser.add_argument('--plot', action='store_true')
     args = parser.parse_args()
     main(args)
