@@ -15,7 +15,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.kernel_approximation import RBFSampler
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 
-from simple_classifier import SimpleClassifier, SimpleRandomClassifier
+from simple_classifier import SimpleClassifier
 
 
 def get_args():
@@ -61,10 +61,10 @@ def get_classifiers(random_state):
         nonlinearize(LogisticRegression(random_state=random_state), random_state),
         AdaBoostClassifier(random_state=random_state),
         nonlinearize(AdaBoostClassifier(random_state=random_state), random_state),
-        SimpleClassifier(),
-        nonlinearize(SimpleClassifier(), random_state),
-        AdaBoostClassifier(SimpleRandomClassifier(random_state=random_state), algorithm='SAMME', random_state=random_state),
-        nonlinearize(AdaBoostClassifier(SimpleRandomClassifier(random_state=random_state), algorithm='SAMME', random_state=random_state), random_state)
+        SimpleClassifier(transformer='mean'),
+        nonlinearize(SimpleClassifier('mean'), random_state),
+        AdaBoostClassifier(SimpleClassifier(transformer='mean-random', random_state=random_state), algorithm='SAMME', random_state=random_state),
+        nonlinearize(AdaBoostClassifier(SimpleClassifier(transformer='mean-random', random_state=random_state), algorithm='SAMME', random_state=random_state), random_state)
     ]
     params = [
         {'C': np.logspace(-4, 1, 20)},
@@ -80,16 +80,16 @@ def get_classifiers(random_state):
 
 
 def main(args):
-    print('The performance compariton:')
-    print('-' * 20)
-    for dataset_name, (X, y) in get_datasets(args.random_state):
-        print('dataset={}, n_samples={}, n_features={}'.format(dataset_name, X.shape[0], X.shape[1]))    
-        cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=args.random_state)
-        for name, classifier, params in get_classifiers(args.random_state):
-            gs = GridSearchCV(classifier, params, scoring='accuracy', cv=cv, error_score=0).fit(X, y)
-            print('{}: {}'.format(name, gs.best_score_))
-        print('=' * 20)
-    print()
+    # print('The performance compariton:')
+    # print('-' * 20)
+    # for dataset_name, (X, y) in get_datasets(args.random_state):
+    #     print('dataset={}, n_samples={}, n_features={}'.format(dataset_name, X.shape[0], X.shape[1]))
+    #     cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=args.random_state)
+    #     for name, classifier, params in get_classifiers(args.random_state):
+    #         gs = GridSearchCV(classifier, params, scoring='accuracy', cv=cv, error_score=0).fit(X, y)
+    #         print('{}: {}'.format(name, gs.best_score_))
+    #     print('=' * 20)
+    # print()
     print('The computational time comparison:')
     print('-' * 20)
     for dataset_name, (X, y) in get_datasets(args.random_state):
