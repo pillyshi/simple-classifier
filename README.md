@@ -1,7 +1,13 @@
 ## Setup
 
+### Install as a project
 ```
 pipenv install
+```
+
+### Install as a package
+```
+pipenv install -e /path/to/simple-classifier
 ```
 
 ## Run examples
@@ -59,33 +65,33 @@ AdaBoost Simple Classifier (nonlinear): 0.97
 The computational time comparison:
 --------------------
 dataset=moons, n_samples=100, n_features=2
-Logistic Regression: 0.00041961669921875 seconds
-Logistic Regression (nonlinear): 0.0010848045349121094 seconds
-AdaBoost Classifier: 0.06579995155334473 seconds
-AdaBoost Classifier (nonlinear): 0.09208011627197266 seconds
-Simple Classifier: 0.000202178955078125 seconds
-Simple Classifier (nonlinear): 0.0007181167602539062 seconds
-AdaBoost Simple Classifier: 0.030386924743652344 seconds
-AdaBoost Simple Classifier (nonlinear): 0.08698391914367676 seconds
+Logistic Regression: 0.0005271434783935547 seconds
+Logistic Regression (nonlinear): 0.0012478828430175781 seconds
+AdaBoost Classifier: 0.05403017997741699 seconds
+AdaBoost Classifier (nonlinear): 0.08444905281066895 seconds
+Simple Classifier: 0.0051250457763671875 seconds
+Simple Classifier (nonlinear): 0.005229949951171875 seconds
+AdaBoost Simple Classifier: 0.040856122970581055 seconds
+AdaBoost Simple Classifier (nonlinear): 0.07993602752685547 seconds
 ====================
 dataset=circles, n_samples=100, n_features=2
-Logistic Regression: 0.00030803680419921875 seconds
-Logistic Regression (nonlinear): 0.001074075698852539 seconds
-AdaBoost Classifier: 0.0614471435546875 seconds
-AdaBoost Classifier (nonlinear): 0.09307098388671875 seconds
-Simple Classifier: 0.00019097328186035156 seconds
-Simple Classifier (nonlinear): 0.0006070137023925781 seconds
-AdaBoost Simple Classifier: 0.030407190322875977 seconds
-AdaBoost Simple Classifier (nonlinear): 0.08505487442016602 seconds
+Logistic Regression: 0.0003142356872558594 seconds
+Logistic Regression (nonlinear): 0.0010678768157958984 seconds
+AdaBoost Classifier: 0.05792498588562012 seconds
+AdaBoost Classifier (nonlinear): 0.08445096015930176 seconds
+Simple Classifier: 0.004865884780883789 seconds
+Simple Classifier (nonlinear): 0.004904031753540039 seconds
+AdaBoost Simple Classifier: 0.038384199142456055 seconds
+AdaBoost Simple Classifier (nonlinear): 0.08080601692199707 seconds
 ====================
 dataset=linearly separable, n_samples=100, n_features=2
-Logistic Regression: 0.0004889965057373047 seconds
-Logistic Regression (nonlinear): 0.0014030933380126953 seconds
-AdaBoost Classifier: 0.05795001983642578 seconds
-AdaBoost Classifier (nonlinear): 0.09112811088562012 seconds
-Simple Classifier: 0.0001957416534423828 seconds
-Simple Classifier (nonlinear): 0.0005719661712646484 seconds
-AdaBoost Simple Classifier: 0.03024888038635254 seconds
-AdaBoost Simple Classifier (nonlinear): 0.08540225028991699 seconds
+Logistic Regression: 0.0003249645233154297 seconds
+Logistic Regression (nonlinear): 0.0010859966278076172 seconds
+AdaBoost Classifier: 0.05123090744018555 seconds
+AdaBoost Classifier (nonlinear): 0.0893399715423584 seconds
+Simple Classifier: 0.0045511722564697266 seconds
+Simple Classifier (nonlinear): 0.005218029022216797 seconds
+AdaBoost Simple Classifier: 0.040426015853881836 seconds
+AdaBoost Simple Classifier (nonlinear): 0.08140897750854492 seconds
 ====================
 ```
