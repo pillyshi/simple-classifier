@@ -80,16 +80,16 @@ def get_classifiers(random_state):
 
 
 def main(args):
-    # print('The performance compariton:')
-    # print('-' * 20)
-    # for dataset_name, (X, y) in get_datasets(args.random_state):
-    #     print('dataset={}, n_samples={}, n_features={}'.format(dataset_name, X.shape[0], X.shape[1]))
-    #     cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=args.random_state)
-    #     for name, classifier, params in get_classifiers(args.random_state):
-    #         gs = GridSearchCV(classifier, params, scoring='accuracy', cv=cv, error_score=0).fit(X, y)
-    #         print('{}: {}'.format(name, gs.best_score_))
-    #     print('=' * 20)
-    # print()
+    print('The performance compariton:')
+    print('-' * 20)
+    for dataset_name, (X, y) in get_datasets(args.random_state):
+        print('dataset={}, n_samples={}, n_features={}'.format(dataset_name, X.shape[0], X.shape[1]))
+        cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=args.random_state)
+        for name, classifier, params in get_classifiers(args.random_state):
+            gs = GridSearchCV(classifier, params, scoring='accuracy', cv=cv, error_score=0).fit(X, y)
+            print('{}: {}'.format(name, gs.best_score_))
+        print('=' * 20)
+    print()
     print('The computational time comparison:')
     print('-' * 20)
     for dataset_name, (X, y) in get_datasets(args.random_state):
