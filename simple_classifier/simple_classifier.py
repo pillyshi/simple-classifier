@@ -5,7 +5,7 @@ from .utils import _check_y, _convert_y
 
 class SimpleClassifier(BaseEstimator, ClassifierMixin):
 
-    def __init__(self, transformer='SRP', random_state=None, sigma=1, k=None):
+    def __init__(self, transformer='mean', random_state=None, sigma=1, k=None):
         self.transformer = transformer
         self.random_state = random_state
         self.sigma = sigma
