@@ -12,14 +12,32 @@ class SimpleClassifier(BaseEstimator, ClassifierMixin):
         self.k = k
 
     def fit(self, X, y, sample_weight=1):
-        self.classes_ = np.unique(y)
-        y = _convert_y(y)
+        if not hasattr(self, 'classes_'):
+            self.classes_ = np.unique(y)
+        y = _convert_y(y, classes=self.classes_)
         n, d = X.shape
         self._set_transformer(X)
         Z = self._transform(X)
         Z = Z * np.c_[sample_weight]
         self.w_ = Z.T.dot(y) / n
+        self.n_samples_ = n
         return self
+
+    def partial_fit(self, X, y, classes=None, sample_weight=1):
+        if self.transformer != 'SRP':
+            assert()
+        if not hasattr(self, 'w_'):
+            self.classes_ = classes
+            self.fit(X, y)
+            return self
+        y = _convert_y(y, classes=self.classes_)
+        n, d = X.shape
+        Z = self._transform(X)
+        Z = Z * np.c_[sample_weight]
+        w = self.n_samples_ * self.w_
+        w += Z.T.dot(y)
+        self.w_ = w / (self.n_samples_ + n)
+        self.n_samples_ += n
 
     def predict(self, X):
         dec = self.decision_function(X)
