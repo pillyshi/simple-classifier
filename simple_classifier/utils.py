@@ -8,9 +8,10 @@ def _check_y(y):
         assert()
 
 
-def _convert_y(y):
-    classes = np.unique(y, axis=0)
+def _convert_y(y, classes=None):
+    if classes is None:
+        classes = np.unique(y, axis=0)
     if len(classes) > 2:
-        Y = LabelBinarizer().fit_transform(y)
+        Y = np.c_[y] == classes
         return 2 * Y - 1
     return 2 * np.int32(y > classes.min()) - 1
