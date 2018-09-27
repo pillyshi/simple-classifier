@@ -61,7 +61,7 @@ class SimpleClassifier(BaseEstimator, ClassifierMixin):
         d = X.shape[1]
         rnd = np.random.RandomState(self.random_state)
         if self.transformer == 'SRP':
-            self.P_ = rnd.normal(0, self.sigma, size=(d, self.k))
+            self.P_ = rnd.normal(0, 1, size=(d, self.k))
         elif self.transformer == 'mean':
             self.mean_ = X.mean(axis=0)
         elif self.transformer == 'mean-random':
