@@ -5,7 +5,7 @@ from .utils import _check_y, _convert_y
 
 class SimpleClassifier(BaseEstimator, ClassifierMixin):
 
-    def __init__(self, transformer='SRP', random_state=None, sigma=1, k=16):
+    def __init__(self, transformer='SRP', random_state=None, sigma=1, k=None):
         self.transformer = transformer
         self.random_state = random_state
         self.sigma = sigma
@@ -16,6 +16,8 @@ class SimpleClassifier(BaseEstimator, ClassifierMixin):
             self.classes_ = np.unique(y)
         y = _convert_y(y, classes=self.classes_)
         n, d = X.shape
+        if self.k is None:
+            self.k = max(16, d)
         self._set_transformer(X)
         Z = self._transform(X)
         Z = Z * np.c_[sample_weight]
@@ -24,14 +26,18 @@ class SimpleClassifier(BaseEstimator, ClassifierMixin):
         return self
 
     def partial_fit(self, X, y, classes=None, sample_weight=1):
-        if self.transformer != 'SRP':
-            assert()
+        # if self.transformer != 'SRP':
+        #     assert()
         if not hasattr(self, 'w_'):
             self.classes_ = classes
             self.fit(X, y)
             return self
         y = _convert_y(y, classes=self.classes_)
         n, d = X.shape
+        if self.transformer == 'mean':
+            mean = self.n_samples_ * self.mean_
+            mean += X.sum(0)
+            self.mean_ = mean / (self.n_samples_ + n)
         Z = self._transform(X)
         Z = Z * np.c_[sample_weight]
         w = self.n_samples_ * self.w_
